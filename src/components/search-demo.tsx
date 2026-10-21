@@ -19,7 +19,10 @@ export function SearchDemo() {
     if (!response.ok) throw new Error("Could not load searches.");
     const data = await response.json(); setItems(data.items); setAuthenticated(true);
   }, []);
-  useEffect(() => { load().catch(() => { setAuthenticated(false); setMessage("The research workspace is temporarily unavailable."); }); }, [load]);
+  useEffect(() => {
+    const task = window.setTimeout(() => { void load().catch(() => { setAuthenticated(false); setMessage("The research workspace is temporarily unavailable."); }); }, 0);
+    return () => window.clearTimeout(task);
+  }, [load]);
 
   async function enterWorkspace() {
     setBusy(true); setMessage("");
