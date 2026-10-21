@@ -1,4 +1,5 @@
 import { SearchDemo } from "@/components/search-demo";
+import { EvaluationDemo } from "@/components/evaluation-demo";
 
 const bands = ["SAR VV", "SAR VH", "Optical RGB", "Embeddings"];
 export default function Home() {
@@ -9,5 +10,6 @@ export default function Home() {
       <div className="relative aspect-square rounded-full border border-cyan-300/20 bg-[radial-gradient(circle_at_40%_35%,#256e7d_0,#103341_32%,#071820_63%,transparent_64%)] shadow-[0_0_100px_rgba(34,211,238,.12)]"><div className="absolute inset-[12%] rounded-full border border-dashed border-cyan-300/30"/><div className="absolute inset-[28%] rounded-full border border-cyan-300/30"/><div className="absolute left-[15%] top-1/2 h-px w-[70%] bg-cyan-300/30"/><div className="absolute bottom-8 left-1/2 grid -translate-x-1/2 grid-cols-2 gap-2 sm:grid-cols-4">{bands.map(b=><span key={b} className="whitespace-nowrap rounded bg-[#071820]/90 px-3 py-2 font-mono text-[10px] text-cyan-100">{b}</span>)}</div></div>
     </section>
     <SearchDemo />
+    <EvaluationDemo />
   </main>;
 }
