@@ -1,0 +1,2 @@
+import {describe,expect,it} from "vitest";import {parseTileId} from "../src/lib/catalog";
+describe("official catalog identifiers",()=>{it("derives aligned modality names without inventing metadata",()=>{const tile=parseTileId("ROIs1158_spring_s2_124_p100.tif");expect(tile?.sar).toBe("ROIs1158_spring_s1_124_p100.tif");expect(tile?.landCover).toBe("ROIs1158_spring_lc_124_p100.tif")});it("rejects unknown names",()=>expect(parseTileId("fake.tif")).toBeNull())});

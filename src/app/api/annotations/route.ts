@@ -1,0 +1,7 @@
+import { z } from "zod";
+import { database } from "@/lib/db";
+import { getDemoUser } from "@/lib/session";
+
+const schema=z.object({tileId:z.string().regex(/^ROIs\d+_(spring|summer|fall|winter)_s2_\d+_p\d+\.tif$/),label:z.enum(["review","relevant","not-relevant"]),note:z.string().trim().max(300)});
+export async function GET(){const userId=await getDemoUser();if(!userId)return Response.json({error:"Authentication required."},{status:401});const sql=await database();const annotations=await sql`SELECT id,tile_id,label,note,created_at FROM sen12ms.annotations WHERE user_id=${userId} ORDER BY created_at DESC`;return Response.json({annotations});}
+export async function POST(request:Request){const userId=await getDemoUser();if(!userId)return Response.json({error:"Authentication required."},{status:401});const parsed=schema.safeParse(await request.json().catch(()=>null));if(!parsed.success)return Response.json({error:"Choose a valid official tile identifier, label, and note under 300 characters."},{status:400});const sql=await database();const [annotation]=await sql`INSERT INTO sen12ms.annotations(user_id,tile_id,label,note) VALUES(${userId},${parsed.data.tileId},${parsed.data.label},${parsed.data.note}) ON CONFLICT(user_id,tile_id) DO UPDATE SET label=EXCLUDED.label,note=EXCLUDED.note,created_at=now() RETURNING id,tile_id,label,note,created_at`;return Response.json({annotation},{status:201});}

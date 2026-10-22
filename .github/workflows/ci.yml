@@ -19,4 +19,4 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
-      - run: python -m py_compile ml/train.py
+      - run: python -m py_compile ml/train.py ml/export_embeddings.py ml/retrieve.py
